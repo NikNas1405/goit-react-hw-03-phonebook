@@ -5,6 +5,9 @@ import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { GlobalStyle } from './GlobalStyle';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -44,9 +47,11 @@ export class App extends Component {
     );
 
     if (checkName) {
-      return alert(`${newContact.name} is already in contacts.`);
+      // return alert(`${newContact.name} is already in contacts.`);
+
+      return toast.error(`${newContact.name} is already in contacts.`);
     } else if (checkNumber) {
-      return alert(`${newContact.number} is already in contacts.`);
+      return toast.error(`${newContact.number} is already in contacts.`);
     } else {
       this.setState(prevState => {
         return {
@@ -89,6 +94,7 @@ export class App extends Component {
         <h2>Contacts</h2>
         <Filter filter={filter} onChange={this.contactFilter} />
         <ContactList contacts={visibleContacts} onDelete={this.onDelete} />
+        <ToastContainer />
         <GlobalStyle />
       </div>
     );

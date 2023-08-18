@@ -13,24 +13,33 @@ export class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-
     filter: '',
-    name: '',
-    number: '',
   };
 
   componentDidMount() {
-    console.log('4');
+    // console.log('componentDidMount');
+    // localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      // console.log('componentDidUpdate');
+    }
   }
 
   addContact = newContact => {
-    // console.log(newContact);
+    const { contacts } = this.state;
 
-    const checkName = this.state.contacts.find(
+    const checkName = contacts.find(
       contact => newContact.name === contact.name
     );
 
-    const checkNumber = this.state.contacts.find(
+    const checkNumber = contacts.find(
       contact => newContact.number === contact.number
     );
 
@@ -71,8 +80,6 @@ export class App extends Component {
   };
 
   render() {
-    console.log(5);
-
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
     return (
